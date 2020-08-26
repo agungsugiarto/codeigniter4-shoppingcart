@@ -1,0 +1,27 @@
+name: inspiring build
+
+on:
+  push:
+    branches: 
+    - master
+  pull_request:
+    branches: 
+    - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: '7.2'
+        extension-csv: intl, json, mbstring, mysqlnd. xdebug, xml
+        coverage: xdebug
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: "Validate composer.json and composer.lock"
+      run: "composer validate"
+    - name: "Install dependencies"
+      run: "composer install"
+    - name: "Run test suite"
+      run: "composer test -- -c phpunit.xml.github-actions.dist"

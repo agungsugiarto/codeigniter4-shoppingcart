@@ -7,6 +7,8 @@ Ported from https://github.com/Crinsane/LaravelShoppingcart for CodeIgniter4
 [![Latest Unstable Version](https://poser.pugx.org/agungsugiarto/codeigniter4-shoppingcart/v/unstable)](https://packagist.org/packages/agungsugiarto/codeigniter4-shoppingcart)
 [![License](https://poser.pugx.org/agungsugiarto/codeigniter4-shoppingcart/license)](https://packagist.org/packages/agungsugiarto/codeigniter4-shoppingcart)
 
+A simple shoppingcart implementation for CodeIgniter4.
+
 ## Installation
 
 Install the package through [Composer](http://getcomposer.org/). 

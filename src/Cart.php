@@ -18,14 +18,14 @@ class Cart
 
     /**
      * Instance session manager.
-     * 
+     *
      * @var \CodeIgniter\Session\Session
      */
     protected $session;
 
     /**
      * Model shopping cart.
-     * 
+     *
      * @var \Fluent\ShoppingCart\Models\ShoppingCart $model
      */
     protected $model;
@@ -40,7 +40,7 @@ class Cart
 
     /**
      * Cart constructor.
-     * 
+     *
      */
     public function __construct()
     {
@@ -55,7 +55,7 @@ class Cart
 
     /**
      * Get the current cart instance.
-     * 
+     *
      * @return string
      */
     public function instance($instance = null)
@@ -69,7 +69,7 @@ class Cart
 
     /**
      * Get the current instance.
-     * 
+     *
      * @return string
      */
     public function currentInstance()
@@ -348,7 +348,7 @@ class Cart
      *
      * @param mixed $identifier
      * @return void
-     * 
+     *
      * @throws \Exception
      */
     public function store($identifier)
@@ -404,7 +404,6 @@ class Cart
         $this->session->set($this->instance, $content);
 
         $this->instance($currentInstance);
-
     }
 
 
@@ -528,15 +527,15 @@ class Cart
     private static function numberFormat($value, $decimals, $decimalPoint, $thousandSeperator)
     {
         if (is_null($decimals)) {
-            $decimals = is_null((new static)->config->format['decimals']) ? 2 : (new static)->config->format['decimals'];
+            $decimals = is_null((new static())->config->format['decimals']) ? 2 : (new static())->config->format['decimals'];
         }
 
         if (is_null($decimalPoint)) {
-            $decimalPoint = is_null((new static)->config->format['decimal_point']) ? '.' : (new static)->config->format['decimal_point'];
+            $decimalPoint = is_null((new static())->config->format['decimal_point']) ? '.' : (new static())->config->format['decimal_point'];
         }
 
         if (is_null($thousandSeperator)) {
-            $thousandSeperator = is_null((new static)->config->format['thousand_seperator']) ? ',' : (new static)->config->format['thousand_seperator'];
+            $thousandSeperator = is_null((new static())->config->format['thousand_seperator']) ? ',' : (new static())->config->format['thousand_seperator'];
         }
 
         return number_format($value, $decimals, $decimalPoint, $thousandSeperator);

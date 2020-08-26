@@ -41,7 +41,7 @@ trait CanBeBought
 
     /**
      * Get the price of buyable item.
-     * 
+     *
      * @return float
      */
     public function getBuyablePrice()

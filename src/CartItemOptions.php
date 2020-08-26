@@ -8,7 +8,7 @@ class CartItemOptions extends Collection
 {
     /**
      * Get the option by the given key.
-     * 
+     *
      * @param string $key
      * @return mixed
      */

@@ -15,7 +15,7 @@ class Cart extends BaseConfig
    | Taxable interface and use the HasTax trait.
    |
    */
-   public $tax = 21;
+    public $tax = 21;
 
    /*
    |--------------------------------------------------------------------------
@@ -45,5 +45,5 @@ class Cart extends BaseConfig
 
       'thousand_seperator' => ','
 
-   ];
+    ];
 }

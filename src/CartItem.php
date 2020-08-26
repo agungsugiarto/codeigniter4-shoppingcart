@@ -74,7 +74,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * CartItem constructor.
-     * 
+     *
      * @param int|string $id
      * @param string     $name
      * @param float      $price
@@ -103,7 +103,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Return the formatted price without TAX.
-     * 
+     *
      * @param int    $decimals
      * @param string $decimalPoint
      * @param string $thousandSeperator
@@ -116,7 +116,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Return the formatted price with TAX.
-     * 
+     *
      * @param int    $decimals
      * @param string $decimalPoint
      * @param string $thousandSeperator
@@ -181,7 +181,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Set the quantity for the cart item.
-     * 
+     *
      * @param int|float $qty
      * @return this
      */
@@ -196,7 +196,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Update the cart item from a buyable.
-     * 
+     *
      * @param \Fluent\ShoppingCart\Contracts\Buyable $item
      * @return void
      */
@@ -210,7 +210,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Update the cart item from an array.
-     * 
+     *
      * @param array $attributes
      * @return void
      */
@@ -224,12 +224,11 @@ class CartItem implements ArrayAble, JsonAble
         $this->priceTax = $this->price + $this->tax;
 
         $this->rowId = $this->generateRowId($this->id, $this->options->all());
-
     }
 
     /**
      * Associate the cart item with the given model.
-     * 
+     *
      * @param mixed $model
      * @return \Fluent\ShoppingCart\CartItem
      */
@@ -242,7 +241,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Set the tax rate.
-     * 
+     *
      * @param int|float $taxRate
      * @return \Fluent\ShoppingCart\CartItem
      */
@@ -255,7 +254,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Set saved state.
-     * 
+     *
      * @param bool $bool
      * @return \Fluent\ShoppingCart\CartItem
      */
@@ -268,7 +267,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Get an attribute from cart item or get the associated model.
-     * 
+     *
      * @param string $atribute
      * @return mixed
      */
@@ -299,7 +298,7 @@ class CartItem implements ArrayAble, JsonAble
         }
 
         if ($attribute === 'model' && isset($this->associatedModel)) {
-            return with(new $this->associatedModel)->find($this->id);
+            return with(new $this->associatedModel())->find($this->id);
         }
 
         return null;
@@ -346,7 +345,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Generate a unique id for the cart item.
-     * 
+     *
      * @param string $id
      * @param array  $options
      * @return string
@@ -360,7 +359,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Get the instance as an array.
-     * 
+     *
      * @return array
      */
     public function toArray()
@@ -380,7 +379,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Convert the object to its JSON representation.
-     * 
+     *
      * @param int $options
      * @return ResponseTrait
      */
@@ -395,7 +394,7 @@ class CartItem implements ArrayAble, JsonAble
 
     /**
      * Get the formatted number.
-     * 
+     *
      * @param float  $value
      * @param int    $decimals
      * @param string $decimalPoint
@@ -404,19 +403,18 @@ class CartItem implements ArrayAble, JsonAble
      */
     private static function numberFormat($value, $decimals = null, $decimalPoint = null, $thousandSeperator = null)
     {
-        if (is_null($decimals)){
+        if (is_null($decimals)) {
             $decimals = is_null(config('Cart')->format['decimal']) ? 2 : config('Cart')->format['decimal'];
         }
 
-        if (is_null($decimalPoint)){
+        if (is_null($decimalPoint)) {
             $decimalPoint = is_null(config('Cart')->format['decimal_point']) ? '.' : config('Cart')->format['decimal_point'];
         }
 
-        if (is_null($thousandSeperator)){
+        if (is_null($thousandSeperator)) {
             $thousandSeperator = is_null(config('Cart')->format['thousand_separator']) ? ',' : config('Cart')->format['thousand_separator'];
         }
 
         return number_format($value, $decimals, $decimalPoint, $thousandSeperator);
     }
-
 }

@@ -6,9 +6,9 @@ interface JsonAble
 {
     /**
      * Convert the object to its JSON representation.
-     * 
+     *
      * @param  int    $options
-     * @return string 
+     * @return string
      */
     public function toJson($options = 0);
 }

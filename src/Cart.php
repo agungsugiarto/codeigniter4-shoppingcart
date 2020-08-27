@@ -50,7 +50,8 @@ class Cart
     /**
      * Get the current cart instance.
      *
-     * @return string
+     * @param string|null $instance
+     * @return $this
      */
     public function instance($instance = null)
     {
@@ -74,13 +75,13 @@ class Cart
     /**
      * Add an item to the cart.
      *
-     * @param mixed     $id
-     * @param mixed     $name
-     * @param int|float $qty
-     * @param float     $price
-     * @param array     $options
-     * @param float     $taxrate
-     * @return \Fluent\ShoppingCart\CartItem
+     * @param mixed          $id
+     * @param mixed          $name
+     * @param int|float|null $qty
+     * @param float|null     $price
+     * @param array          $options
+     * @param float|null     $taxrate
+     * @return \Fluent\ShoppingCart\CartItem|array
      */
     public function add($id, $name = null, $qty = null, $price = null, array $options = [], $taxrate = null)
     {
@@ -143,6 +144,7 @@ class Cart
 
         if ($cartItem->qty <= 0) {
             $this->remove($cartItem->rowId);
+
             return;
         } else {
             $content->put($cartItem->rowId, $cartItem);
@@ -204,7 +206,7 @@ class Cart
     /**
      * Get the content of the cart.
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \Tightenco\Collect\Support\Collection|array
      */
     public function content()
     {
@@ -228,12 +230,12 @@ class Cart
     /**
      * Get the total price of the items in the cart.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function total($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function total($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
         $content = $this->getContent();
 
@@ -241,18 +243,18 @@ class Cart
             return $total + ($cartItem->qty * $cartItem->priceTax);
         }, 0);
 
-        return CartItem::numberFormat($total, $decimals, $decimalPoint, $thousandSeperator);
+        return CartItem::numberFormat($total, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Get the total tax of the items in the cart.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return float
      */
-    public function tax($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function tax($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
         $content = $this->getContent();
 
@@ -260,15 +262,15 @@ class Cart
             return $tax + ($cartItem->qty * $cartItem->tax);
         }, 0);
 
-        return CartItem::numberFormat($tax, $decimals, $decimalPoint, $thousandSeperator);
+        return CartItem::numberFormat($tax, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Get the subtotal (total - tax) of the items in the cart.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeperator
      * @return float
      */
     public function subtotal($decimals = null, $decimalPoint = null, $thousandSeperator = null)
@@ -439,15 +441,13 @@ class Cart
     /**
      * Get the carts content, if there is no cart content set yet, return a new empty Collection.
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \Tightenco\Collect\Support\Collection|array
      */
     protected function getContent()
     {
-        $content = $this->session->has($this->instance)
+        return $this->session->has($this->instance)
             ? $this->session->get($this->instance)
             : new Collection();
-
-        return $content;
     }
 
     /**

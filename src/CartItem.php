@@ -2,12 +2,12 @@
 
 namespace Fluent\ShoppingCart;
 
-use Fluent\ShoppingCart\Contracts\ArrayAble;
 use Fluent\ShoppingCart\Contracts\Buyable;
-use Fluent\ShoppingCart\Contracts\JsonAble;
+use Tightenco\Collect\Contracts\Support\Arrayable;
+use Tightenco\Collect\Contracts\Support\Jsonable;
 use Tightenco\Collect\Support\Arr;
 
-class CartItem implements ArrayAble, JsonAble
+class CartItem implements Arrayable, Jsonable
 {
     /**
      * The rowID of the cart item.
@@ -104,86 +104,86 @@ class CartItem implements ArrayAble, JsonAble
     /**
      * Return the formatted price without TAX.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function price($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function price($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
-        return static::numberFormat($this->price, $decimals, $decimalPoint, $thousandSeperator);
+        return static::numberFormat($this->price, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Return the formatted price with TAX.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function priceTax($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function priceTax($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
-        return static::numberFormat($this->priceTax, $decimals, $decimalPoint, $thousandSeperator);
+        return static::numberFormat($this->priceTax, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Returns the formatted subTotal.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function subTotal($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function subTotal($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
-        return static::numberFormat($this->subTotal, $decimals, $decimalPoint, $thousandSeperator);
+        return static::numberFormat($this->subTotal, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Returns the formatted total.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function total($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function total($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
-        return static::numberFormat($this->total, $decimals, $decimalPoint, $thousandSeperator);
+        return static::numberFormat($this->total, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Returns the formatted tax.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function tax($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function tax($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
-        return static::numberFormat($this->tax, $decimals, $decimalPoint, $thousandSeperator);
+        return static::numberFormat($this->tax, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Returns the formatted tax.
      *
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public function taxTotal($decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public function taxTotal($decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
-        return static::numberFormat($this->taxTotal, $decimals, $decimalPoint, $thousandSeperator);
+        return static::numberFormat($this->taxTotal, $decimals, $decimalPoint, $thousandSeparator);
     }
 
     /**
      * Set the quantity for the cart item.
      *
      * @param int|float $qty
-     * @return this
+     * @return void
      */
     public function setQuantity($qty)
     {
@@ -268,7 +268,7 @@ class CartItem implements ArrayAble, JsonAble
     /**
      * Get an attribute from cart item or get the associated model.
      *
-     * @param string $atribute
+     * @param $attribute
      * @return mixed
      */
     public function __get($attribute)
@@ -381,7 +381,7 @@ class CartItem implements ArrayAble, JsonAble
      * Convert the object to its JSON representation.
      *
      * @param int $options
-     * @return ResponseTrait
+     * @return string
      */
     public function toJson($options = 0)
     {
@@ -395,13 +395,13 @@ class CartItem implements ArrayAble, JsonAble
     /**
      * Get the formatted number.
      *
-     * @param float  $value
-     * @param int    $decimals
-     * @param string $decimalPoint
-     * @param string $thousandSeperator
+     * @param float       $value
+     * @param int|null    $decimals
+     * @param string|null $decimalPoint
+     * @param string|null $thousandSeparator
      * @return string
      */
-    public static function numberFormat($value, $decimals = null, $decimalPoint = null, $thousandSeperator = null)
+    public static function numberFormat($value, $decimals = null, $decimalPoint = null, $thousandSeparator = null)
     {
         if (is_null($decimals)) {
             $decimals = is_null(config('Cart')->format['decimals']) ?? 2;
@@ -411,10 +411,10 @@ class CartItem implements ArrayAble, JsonAble
             $decimalPoint = is_null(config('Cart')->format['decimal_point']) ?? '.';
         }
 
-        if (is_null($thousandSeperator)) {
-            $thousandSeperator = is_null(config('Cart')->format['thousand_seperator']) ?? ',';
+        if (is_null($thousandSeparator)) {
+            $thousandSeparator = is_null(config('Cart')->format['thousand_separator']) ?? ',';
         }
 
-        return number_format($value, $decimals, $decimalPoint, $thousandSeperator);
+        return number_format($value, $decimals, $decimalPoint, $thousandSeparator);
     }
 }

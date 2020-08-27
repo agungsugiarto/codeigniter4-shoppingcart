@@ -28,6 +28,6 @@ class Cart extends BaseConfig
 
         'decimal_point' => '.',
 
-        'thousand_seperator' => ',',
+        'thousand_separator' => ',',
     ];
 }

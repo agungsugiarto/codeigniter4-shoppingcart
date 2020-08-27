@@ -6,10 +6,9 @@ use Fluent\ShoppingCart\Contracts\Buyable;
 use Fluent\ShoppingCart\Exceptions\InvalidRowIDException;
 use Fluent\ShoppingCart\Exceptions\UnknownModelException;
 use Fluent\ShoppingCart\Models\ShoppingCart;
-use CodeIgniter\Config\Config;
+use CodeIgniter\Config\Services;
 use CodeIgniter\Events\Events;
 use CodeIgniter\I18n\Time;
-use Config\Services;
 use Tightenco\Collect\Support\Collection;
 
 class Cart
@@ -30,9 +29,6 @@ class Cart
      */
     protected $model;
 
-    /** @var \Fluent\ShoppingCart\Config\Cart $config */
-    protected $config;
-
     /**
      * @var string
      */
@@ -44,8 +40,6 @@ class Cart
      */
     public function __construct()
     {
-        $this->config = Config::get('Cart');
-        
         $this->session = Services::session();
 
         $this->model = new ShoppingCart();
@@ -247,7 +241,7 @@ class Cart
             return $total + ($cartItem->qty * $cartItem->priceTax);
         }, 0);
 
-        return static::numberFormat($total, $decimals, $decimalPoint, $thousandSeperator);
+        return CartItem::numberFormat($total, $decimals, $decimalPoint, $thousandSeperator);
     }
 
     /**
@@ -266,7 +260,7 @@ class Cart
             return $tax + ($cartItem->qty * $cartItem->tax);
         }, 0);
 
-        return static::numberFormat($tax, $decimals, $decimalPoint, $thousandSeperator);
+        return CartItem::numberFormat($tax, $decimals, $decimalPoint, $thousandSeperator);
     }
 
     /**
@@ -285,7 +279,7 @@ class Cart
             return $subTotal + ($cartItem->qty * $cartItem->price);
         }, 0);
 
-        return static::numberFormat($subTotal, $decimals, $decimalPoint, $thousandSeperator);
+        return CartItem::numberFormat($subTotal, $decimals, $decimalPoint, $thousandSeperator);
     }
 
     /**
@@ -355,7 +349,8 @@ class Cart
     {
         $content = $this->getContent();
 
-        $this->model->where('identifier', $identifier)
+        $this->model
+            ->where('identifier', $identifier)
             ->where('instance', $this->currentInstance())
             ->delete();
 
@@ -483,7 +478,7 @@ class Cart
         if (isset($taxrate) && is_numeric($taxrate)) {
             $cartItem->setTaxRate($taxrate);
         } else {
-            $cartItem->setTaxRate(config('cart.tax'));
+            $cartItem->setTaxRate(config('Cart')->tax);
         }
 
         return $cartItem;
@@ -513,31 +508,5 @@ class Cart
         return $this->model->where('identifier', $identifier)->where('instance', $this->currentInstance())->first()
             ? true
             : false;
-    }
-
-    /**
-     * Get the formatted number
-     *
-     * @param $value
-     * @param $decimals
-     * @param $decimalPoint
-     * @param $thousandSeperator
-     * @return string
-     */
-    private static function numberFormat($value, $decimals, $decimalPoint, $thousandSeperator)
-    {
-        if (is_null($decimals)) {
-            $decimals = is_null((new static())->config->format['decimals']) ? 2 : (new static())->config->format['decimals'];
-        }
-
-        if (is_null($decimalPoint)) {
-            $decimalPoint = is_null((new static())->config->format['decimal_point']) ? '.' : (new static())->config->format['decimal_point'];
-        }
-
-        if (is_null($thousandSeperator)) {
-            $thousandSeperator = is_null((new static())->config->format['thousand_seperator']) ? ',' : (new static())->config->format['thousand_seperator'];
-        }
-
-        return number_format($value, $decimals, $decimalPoint, $thousandSeperator);
     }
 }

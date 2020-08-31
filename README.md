@@ -33,6 +33,23 @@ Look at one of the following topics to learn more about LaravelShoppingcart
 
 ## Usage
 
+Example how to load library
+
+```php
+// Via services
+$cart = \Fluent\ShoppingCart\Config\Services::cart();
+$cart->add();
+
+// Traditional way
+$cart = new \Fluent\ShoppingCart\Cart();
+$cart->add();
+
+// Static call
+use Fluent\ShooppingCart\Facades\Cart;
+
+Cart::add()
+```
+
 The shoppingcart gives you the following methods to use:
 
 ### Services::cart()->add()

@@ -52,20 +52,20 @@ Cart::add()
 
 The shoppingcart gives you the following methods to use:
 
-### Services::cart()->add()
+### Cart::add()
 
 Adding an item to the cart is really simple, you just use the `add()` method, which accepts a variety of parameters.
 
 In its most basic form you can specify the id, name, quantity, price of the product you'd like to add to the cart.
 
 ```php
-Services::cart()->add('293ad', 'Product 1', 1, 9.99);
+Cart::add('293ad', 'Product 1', 1, 9.99);
 ```
 
 As an optional fifth parameter you can pass it options, so you can add multiple items with the same id, but with (for instance) a different size.
 
 ```php
-Services::cart()->add('293ad', 'Product 1', 1, 9.99, ['size' => 'large']);
+Cart::add('293ad', 'Product 1', 1, 9.99, ['size' => 'large']);
 ```
 
 **The `add()` method will return an CartItem instance of the item you just added to the cart.**
@@ -73,7 +73,7 @@ Services::cart()->add('293ad', 'Product 1', 1, 9.99, ['size' => 'large']);
 Maybe you prefer to add the item using an array? As long as the array contains the required keys, you can pass it to the method. The options key is optional.
 
 ```php
-Services::cart()->add(['id' => '293ad', 'name' => 'Product 1', 'qty' => 1, 'price' => 9.99, 'options' => ['size' => 'large']]);
+Cart::add(['id' => '293ad', 'name' => 'Product 1', 'qty' => 1, 'price' => 9.99, 'options' => ['size' => 'large']]);
 ```
 
 New in version 2 of the package is the possibility to work with the `Buyable` interface. The way this works is that you have a model implement the `Buyable` interface, which will make you implement a few methods so the package knows how to get the id, name and price from your model. 
@@ -82,11 +82,11 @@ This way you can just pass the `add()` method a model and the quantity and it wi
 **As an added bonus it will automatically associate the model with the CartItem**
 
 ```php
-Services::cart()->add($product, 1, ['size' => 'large']);
+Cart::add($product, 1, ['size' => 'large']);
 ```
 As an optional third parameter you can add options.
 ```php
-Services::cart()->add($product, 1, ['size' => 'large']);
+Cart::add($product, 1, ['size' => 'large']);
 ```
 
 Finally, you can also add multipe items to the cart at once.
@@ -95,16 +95,16 @@ You can just pass the `add()` method an array of arrays, or an array of Buyables
 **When adding multiple items to the cart, the `add()` method will return an array of CartItems.**
 
 ```php
-Services::cart()->add([
+Cart::add([
   ['id' => '293ad', 'name' => 'Product 1', 'qty' => 1, 'price' => 10.00],
   ['id' => '4832k', 'name' => 'Product 2', 'qty' => 1, 'price' => 10.00, 'options' => ['size' => 'large']]
 ]);
 
-Services::cart()->add([$product1, $product2]);
+Cart::add([$product1, $product2]);
 
 ```
 
-### Services::cart()->update()
+### Cart::update()
 
 To update an item in the cart, you'll first need the rowId of the item.
 Next you can use the `update()` method to update it.
@@ -114,102 +114,102 @@ If you simply want to update the quantity, you'll pass the update method the row
 ```php
 $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
 
-Services::cart()->update($rowId, 2); // Will update the quantity
+Cart::update($rowId, 2); // Will update the quantity
 ```
 
 If you want to update more attributes of the item, you can either pass the update method an array or a `Buyable` as the second parameter. This way you can update all information of the item with the given rowId.
 
 ```php
-Services::cart()->update($rowId, ['name' => 'Product 1']); // Will update the name
+Cart::update($rowId, ['name' => 'Product 1']); // Will update the name
 
-Services::cart()->update($rowId, $product); // Will update the id, name and price
+Cart::update($rowId, $product); // Will update the id, name and price
 
 ```
 
-### Services::cart()->remove()
+### Cart::remove()
 
 To remove an item for the cart, you'll again need the rowId. This rowId you simply pass to the `remove()` method and it will remove the item from the cart.
 
 ```php
 $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
 
-Services::cart()->remove($rowId);
+Cart::remove($rowId);
 ```
 
-### Services::cart()->get()
+### Cart::get()
 
 If you want to get an item from the cart using its rowId, you can simply call the `get()` method on the cart and pass it the rowId.
 
 ```php
 $rowId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
 
-Services::cart()->get($rowId);
+Cart::get($rowId);
 ```
 
-### Services::cart()->content()
+### Cart::content()
 
 Of course you also want to get the carts content. This is where you'll use the `content` method. This method will return a Collection of CartItems which you can iterate over and show the content to your customers.
 
 ```php
-Services::cart()->content();
+Cart::content();
 ```
 
 This method will return the content of the current cart instance, if you want the content of another instance, simply chain the calls.
 
 ```php
-Services::cart()->instance('wishlist')->content();
+Cart::instance('wishlist')->content();
 ```
 
-### Services::cart()->destroy()
+### Cart::destroy()
 
 If you want to completely remove the content of a cart, you can call the destroy method on the cart. This will remove all CartItems from the cart for the current cart instance.
 
 ```php
-Services::cart()->destroy();
+Cart::destroy();
 ```
 
-### Services::cart()->total()
+### Cart::total()
 
 The `total()` method can be used to get the calculated total of all items in the cart, given there price and quantity.
 
 ```php
-Services::cart()->total();
+Cart::total();
 ```
 
 The method will automatically format the result, which you can tweak using the three optional parameters
 
 ```php
-Services::cart()->total($decimals, $decimalSeperator, $thousandSeperator);
+Cart::total($decimals, $decimalSeperator, $thousandSeperator);
 ```
 
 You can set the default number format in the config file.
 
 **If you're not using the Facade, but use dependency injection in your (for instance) Controller, you can also simply get the total property `$cart->total`**
 
-### Services::cart()->taxt()
+### Cart::taxt()
 
 The `tax()` method can be used to get the calculated amount of tax for all items in the cart, given there price and quantity.
 
 ```php
-Services::cart()->taxt();
+Cart::taxt();
 ```
 
 The method will automatically format the result, which you can tweak using the three optional parameters
 
 ```php
-Services::cart()->taxt($decimals, $decimalSeperator, $thousandSeperator);
+Cart::taxt($decimals, $decimalSeperator, $thousandSeperator);
 ```
 
 You can set the default number format in the config file.
 
 **If you're not using the Facade, but use dependency injection in your (for instance) Controller, you can also simply get the tax property `$cart->tax`**
 
-### Services::cart()->subtotal()
+### Cart::subtotal()
 
 The `subtotal()` method can be used to get the total of all items in the cart, minus the total amount of tax. 
 
 ```php
-Services::cart()->subtotal();
+Cart::subtotal();
 ```
 
 The method will automatically format the result, which you can tweak using the three optional parameters
@@ -222,15 +222,15 @@ You can set the default number format in the config file.
 
 **If you're not using the Facade, but use dependency injection in your (for instance) Controller, you can also simply get the subtotal property `$cart->subtotal`**
 
-### Services::cart()->count()
+### Cart::count()
 
 If you want to know how many items there are in your cart, you can use the `count()` method. This method will return the total number of items in the cart. So if you've added 2 books and 1 shirt, it will return 3 items.
 
 ```php
-Services::cart()->count();
+Cart::count();
 ```
 
-### Services::cart()->search()
+### Cart::search()
 
 To find an item in the cart, you can use the `search()` method.
 
@@ -261,45 +261,45 @@ On multiple instances the Cart will return to you a Collection. This is just a s
 As an example, you can quicky get the number of unique products in a cart:
 
 ```php
-Services::cart()->content()->count();
+Cart::content()->count();
 ```
 
 Or you can group the content by the id of the products:
 
 ```php
-Services::cart()->content()->groupBy('id');
+Cart::content()->groupBy('id');
 ```
 
 ## Instances
 
 The packages supports multiple instances of the cart. The way this works is like this:
 
-You can set the current instance of the cart by calling `Services::cart()->instance('newInstance')`. From this moment, the active instance of the cart will be `newInstance`, so when you add, remove or get the content of the cart, you're work with the `newInstance` instance of the cart.
-If you want to switch instances, you just call `Services::cart()->instance('otherInstance')` again, and you're working with the `otherInstance` again.
+You can set the current instance of the cart by calling `Cart::instance('newInstance')`. From this moment, the active instance of the cart will be `newInstance`, so when you add, remove or get the content of the cart, you're work with the `newInstance` instance of the cart.
+If you want to switch instances, you just call `Cart::instance('otherInstance')` again, and you're working with the `otherInstance` again.
 
 So a little example:
 
 ```php
-Services::cart()->instance('shopping')->add('192ao12', 'Product 1', 1, 9.99);
+Cart::instance('shopping')->add('192ao12', 'Product 1', 1, 9.99);
 
 // Get the content of the 'shopping' cart
-Services::cart()->content();
+Cart::content();
 
-Services::cart()->instance('wishlist')->add('sdjk922', 'Product 2', 1, 19.95, ['size' => 'medium']);
+Cart::instance('wishlist')->add('sdjk922', 'Product 2', 1, 19.95, ['size' => 'medium']);
 
 // Get the content of the 'wishlist' cart
-Services::cart()->content();
+Cart::content();
 
 // If you want to get the content of the 'shopping' cart again
-Services::cart()->instance('shopping')->content();
+Cart::instance('shopping')->content();
 
 // And the count of the 'wishlist' cart again
-Services::cart()->instance('wishlist')->count();
+Cart::instance('wishlist')->count();
 ```
 
 **N.B. Keep in mind that the cart stays in the last set instance for as long as you don't set a different one during script execution.**
 
-**N.B.2 The default cart instance is called `default`, so when you're not using instances,`Services::cart()->content();` is the same as `Services::cart()->instance('default')->content()`.**
+**N.B.2 The default cart instance is called `default`, so when you're not using instances,`Cart::content();` is the same as `Cart::instance('default')->content()`.**
 
 ## Models
 
@@ -316,19 +316,19 @@ Here is an example:
 ```php
 
 // First we'll add the item to the cart.
-$cartItem = Services::cart()->add('293ad', 'Product 1', 1, 9.99, ['size' => 'large']);
+$cartItem = Cart::add('293ad', 'Product 1', 1, 9.99, ['size' => 'large']);
 
 // Next we associate a model with the item.
-Services::cart()->associate($cartItem->rowId, 'Product');
+Cart::associate($cartItem->rowId, 'Product');
 
 // Or even easier, call the associate method on the CartItem!
 $cartItem->associate('Product');
 
 // You can even make it a one-liner
-Services::cart()->add('293ad', 'Product 1', 1, 9.99, ['size' => 'large'])->associate('Product');
+Cart::add('293ad', 'Product 1', 1, 9.99, ['size' => 'large'])->associate('Product');
 
 // Now, when iterating over the content of the cart, you can access the model.
-foreach(Services::cart()->content() as $row) {
+foreach(Cart::content() as $row) {
 	echo 'You have ' . $row->qty . ' items of ' . $row->model->name . ' with description: "' . $row->model->description . '" in your cart.';
 }
 ```
@@ -354,19 +354,19 @@ To make your life easy, the package also includes a ready to use `migration` whi
 ### Storing the cart    
 To store your cart instance into the database, you have to call the `store($identifier) ` method. Where `$identifier` is a random key, for instance the id or username of the user.
 ```php
-Services::cart()->store('username');
+Cart::store('username');
     
 // To store a cart instance named 'wishlist'
-Services::cart()->instance('wishlist')->store('username');
+Cart::instance('wishlist')->store('username');
 ```
 
 ### Restoring the cart
 If you want to retrieve the cart from the database and restore it, all you have to do is call the  `restore($identifier)` where `$identifier` is the key you specified for the `store` method.
 ```php
-Services::cart()->restore('username');
+Cart::restore('username');
     
 // To restore a cart instance named 'wishlist'
-Services::cart()->instance('wishlist')->restore('username');
+Cart::instance('wishlist')->restore('username');
 ```
 
 ## Exceptions
@@ -398,8 +398,8 @@ Below is a little example of how to list the cart content in a table:
 ```php
 
 // Add some items in your Controller.
-Services::cart()->add('192ao12', 'Product 1', 1, 9.99);
-Services::cart()->add('1239ad0', 'Product 2', 2, 5.95, ['size' => 'large']);
+Cart::add('192ao12', 'Product 1', 1, 9.99);
+Cart::add('1239ad0', 'Product 2', 2, 5.95, ['size' => 'large']);
 
 // Display the content in a View.
 <table>
@@ -414,7 +414,7 @@ Services::cart()->add('1239ad0', 'Product 2', 2, 5.95, ['size' => 'large']);
 
    	<tbody>
 
-   		<?php foreach(Services::cart()->content() as $row) :?>
+   		<?php foreach(Cart::content() as $row) :?>
 
        		<tr>
            		<td>

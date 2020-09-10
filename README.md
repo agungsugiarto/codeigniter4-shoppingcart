@@ -20,7 +20,7 @@ Run the Composer require command from the Terminal:
 Now you're ready to start using the shoppingcart in your application.
 
 ## Overview
-Look at one of the following topics to learn more about LaravelShoppingcart
+Look at one of the following topics to learn more about CodeIgniter4 ShoppingCart
 
 * [Usage](#usage)
 * [Collections](#collections)

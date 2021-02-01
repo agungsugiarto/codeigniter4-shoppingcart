@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "codeigniter4/framework": "^4.0",
+        "php": "^7.3 || ^8.0",
+        "codeigniter4/framework": "^4.1",
         "tightenco/collect": "^7.19"
     },
     "autoload": {
@@ -28,6 +28,6 @@
         }
     },
     "scripts": {
-        "test": "phpunit --colors=always -vvv"
+        "test": "phpunit --testdox --colors=always -vvv"
     }
 }

@@ -62,7 +62,7 @@ class CartCommand extends BaseCommand
         $path = "{$this->sourcePath}/Config/Cart.php";
 
         $content = file_get_contents($path);
-        $content = str_replace('namespace Fluent\ShoppingCart\Config', 'namespace App\Config', $content);
+        $content = str_replace('namespace Fluent\ShoppingCart\Config', 'namespace Config', $content);
 
         $this->writeFile('Config/Cart.php', $content);
     }
